@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аркадная гонка</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #222;
+            font-family: Arial, sans-serif;
+        }
+        #game-container {
+            position: relative;
+        }
+        #game-canvas {
+            background-color: #333;
+            border: 2px solid #444;
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 24px;
+        }
+        #game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 48px;
+            display: none;
+        }
+        #restart-btn {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas" width="600" height="400"></canvas>
+        <div id="score">Счёт: 0</div>
+        <div id="game-over">ИГРА ОКОНЧЕНА</div>
+        <button id="restart-btn">НАЧАТЬ ЗАНОВО</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const gameOverElement = document.getElementById('game-over');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // Настройки игры
+        const carWidth = 50;
+        const carHeight = 80;
+        const roadWidth = 200;
+        const obstacleWidth = 50;
+        const obstacleHeight = 50;
+        const obstacleGap = 200;
+
+        // Игровые объекты
+        let carX = canvas.width / 2 - carWidth / 2;
+        let carY = canvas.height - carHeight - 20;
+        let obstacles = [];
+        let score = 0;
+        let gameSpeed = 3;
+        let gameRunning = true;
+        let keys = {};
+
+        // Обработка нажатий клавиш
+        document.addEventListener('keydown', (e) => {
+            keys[e.key] = true;
+        });
+
+        document.addEventListener('keyup', (e) => {
+            keys[e.key] = false;
+        });
+
+        // Кнопка перезапуска
+        restartBtn.addEventListener('click', () => {
+            resetGame();
+            gameOverElement.style.display = 'none';
+            restartBtn.style.display = 'none';
+        });
+
+        // Сброс игры
+        function resetGame() {
+            carX = canvas.width / 2 - carWidth / 2;
+            obstacles = [];
+            score = 0;
+            gameSpeed = 3;
+            gameRunning = true;
+            scoreElement.textContent = `Счёт: ${score}`;
+            gameLoop();
+        }
+
+        // Создание препятствий
+        function createObstacle() {
+            const lane = Math.floor(Math.random() * 3);
+            const obstacleX = canvas.width / 2 - roadWidth / 2 + lane * (roadWidth / 3) + (roadWidth / 6) - obstacleWidth / 2;
+            obstacles.push({
+                x: obstacleX,
+                y: -obstacleHeight,
+                width: obstacleWidth,
+                height: obstacleHeight
+            });
+        }
+
+        // Обновление игры
+        function update() {
+            if (!gameRunning) return;
+
+            // Движение машины
+            if (keys['ArrowLeft'] && carX > canvas.width / 2 - roadWidth / 2) {
+                carX -= 5;
+            }
+            if (keys['ArrowRight'] && carX < canvas.width / 2 + roadWidth / 2 - carWidth) {
+                carX += 5;
+            }
+
+            // Движение препятствий
+            for (let i = 0; i < obstacles.length; i++) {
+                obstacles[i].y += gameSpeed;
+
+                // Проверка столкновения
+                if (
+                    carX < obstacles[i].x + obstacles[i].width &&
+                    carX + carWidth > obstacles[i].x &&
+                    carY < obstacles[i].y + obstacles[i].height &&
+                    carY + carHeight > obstacles[i].y
+                ) {
+                    gameRunning = false;
+                    gameOverElement.style.display = 'block';
+                    restartBtn.style.display = 'block';
+                    return;
+                }
+
+                // Удаление препятствий за пределами экрана
+                if (obstacles[i].y > canvas.height) {
+                    obstacles.splice(i, 1);
+                    score++;
+                    scoreElement.textContent = `Счёт: ${score}`;
+
+                    // Увеличение скорости каждые 5 очков
+                    if (score % 5 === 0) {
+                        gameSpeed += 0.5;
+                    }
+                }
+            }
+
+            // Создание новых препятствий
+            if (Math.random() < 0.02 && obstacles.length < 5) {
+                createObstacle();
+            }
+        }
+
+        // Отрисовка игры
+        function draw() {
+            // Очистка канваса
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Отрисовка дороги
+            ctx.fillStyle = '#555';
+            ctx.fillRect(canvas.width / 2 - roadWidth / 2, 0, roadWidth, canvas.height);
+
+            // Отрисовка разметки дороги
+            ctx.strokeStyle = '#FFF';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, 0);
+            ctx.lineTo(canvas.width / 2, canvas.height);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2 - roadWidth / 3, 0);
+            ctx.lineTo(canvas.width / 2 - roadWidth / 3, canvas.height);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2 + roadWidth / 3, 0);
+            ctx.lineTo(canvas.width / 2 + roadWidth / 3, canvas.height);
+            ctx.stroke();
+
+            // Отрисовка машины
+            ctx.fillStyle = '#FF5733';
+            ctx.fillRect(carX, carY, carWidth, carHeight);
+
+            // Отрисовка препятствий
+            ctx.fillStyle = '#33FF57';
+            for (const obstacle of obstacles) {
+                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            }
+        }
+
+        // Основной игровой цикл
+        function gameLoop() {
+            update();
+            draw();
+            if (gameRunning) {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        // Запуск игры
+        resetGame();
+    </script>
+</body>
+</html>

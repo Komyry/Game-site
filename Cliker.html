@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кликер с прокачкой</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #f0f0f0;
+            user-select: none; /* Отключаем выделение текста */
+        }
+        .clicker {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.1s;
+            user-select: none; /* Отключаем выделение текста */
+        }
+        .clicker:active {
+            transform: scale(0.95);
+        }
+        .stats {
+            margin: 20px 0;
+            font-size: 20px;
+        }
+        .upgrades {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .upgrade {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            user-select: none; /* Отключаем выделение текста */
+        }
+        .upgrade:hover {
+            background-color: #0b7dda;
+        }
+        .upgrade.disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Кликер с прокачкой</h1>
+    <div class="stats">
+        <p>Очки: <span id="score">0</span></p>
+        <p>Уровень: <span id="level">1</span></p>
+        <p>Кликов в секунду: <span id="clicksPerSecond">0</span></p>
+    </div>
+    <div class="clicker" onclick="clickButton()">
+        <span id="clickerText">Клик!</span>
+    </div>
+    <div class="upgrades">
+        <button class="upgrade" onclick="buyUpgrade(1)">Улучшить клик (+1 за клик) - 10 очков</button>
+        <button class="upgrade" onclick="buyUpgrade(2)">Авто-кликер (+1 в секунду) - 50 очков</button>
+        <button class="upgrade" onclick="buyUpgrade(3)">Бонусный клик (x2 за клик) - 100 очков</button>
+    </div>
+
+    <script>
+        let score = 0;
+        let level = 1;
+        let clicksPerSecond = 0;
+        let clickPower = 1;
+        let autoClickInterval;
+        let upgradeCosts = {
+            1: 10,
+            2: 50,
+            3: 100
+        };
+
+        function updateDisplay() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('level').textContent = level;
+            document.getElementById('clicksPerSecond').textContent = clicksPerSecond;
+            checkUpgradeAvailability();
+        }
+
+        function clickButton() {
+            score += clickPower;
+            updateDisplay();
+            checkLevelUp();
+        }
+
+        function checkLevelUp() {
+            if (score >= level * 100) {
+                level++;
+                updateDisplay();
+            }
+        }
+
+        function buyUpgrade(upgradeId) {
+            if (score >= upgradeCosts[upgradeId]) {
+                score -= upgradeCosts[upgradeId];
+                upgradeCosts[upgradeId] = Math.ceil(upgradeCosts[upgradeId] * 1.5);
+
+                switch(upgradeId) {
+                    case 1:
+                        clickPower++;
+                        document.querySelectorAll('.upgrade')[0].textContent =
+                            `Улучшить клик (+1 за клик) - ${upgradeCosts[1]} очков`;
+                        break;
+                    case 2:
+                        clicksPerSecond += 1;
+                        document.querySelectorAll('.upgrade')[1].textContent =
+                            `Авто-кликер (+1 в секунду) - ${upgradeCosts[2]} очков`;
+                        if (!autoClickInterval) {
+                            autoClickInterval = setInterval(() => {
+                                score += clicksPerSecond;
+                                updateDisplay();
+                                checkLevelUp();
+                            }, 1000);
+                        }
+                        break;
+                    case 3:
+                        clickPower *= 2;
+                        document.querySelectorAll('.upgrade')[2].textContent =
+                            `Бонусный клик (x2 за клик) - ${upgradeCosts[3]} очков`;
+                        break;
+                }
+                updateDisplay();
+            }
+        }
+
+        function checkUpgradeAvailability() {
+            const upgrades = document.querySelectorAll('.upgrade');
+            upgrades.forEach((upgrade, index) => {
+                if (score >= upgradeCosts[index + 1]) {
+                    upgrade.classList.remove('disabled');
+                } else {
+                    upgrade.classList.add('disabled');
+                }
+            });
+        }
+
+        // Инициализация
+        updateDisplay();
+        checkUpgradeAvailability();
+    </script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Змейка</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        #game-container {
+            position: relative;
+            margin: 20px auto;
+        }
+        #game-canvas {
+            background-color: #222;
+            border: 2px solid #444;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        #score {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #333;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #countdown {
+            font-size: 48px;
+            color: #ff0000;
+            font-weight: bold;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Змейка</h1>
+    <div id="score">Счёт: 0</div>
+    <div id="game-container">
+        <canvas id="game-canvas" width="400" height="400"></canvas>
+        <div id="countdown">3</div>
+    </div>
+    <div class="controls">
+        <button id="start-btn">Запустить игру</button>
+        <button id="restart-btn" disabled>Перезапустить</button>
+    </div>
+
+    <script>
+        // Получаем элементы DOM
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const countdownElement = document.getElementById('countdown');
+        const startButton = document.getElementById('start-btn');
+        const restartButton = document.getElementById('restart-btn');
+
+        // Константы игры
+        const GRID_SIZE = 20;
+        const GRID_WIDTH = canvas.width / GRID_SIZE;
+        const GRID_HEIGHT = canvas.height / GRID_SIZE;
+
+        // Переменные игры
+        let snake = [];
+        let food = {};
+        let direction = 'up';
+        let nextDirection = 'up';
+        let score = 0;
+        let gameRunning = false;
+        let gameLoop = null;
+        let countdownTimer = null;
+
+        // Инициализация игры
+        function initGame() {
+            // Сбрасываем змейку в центр
+            snake = [
+                { x: Math.floor(GRID_WIDTH / 2), y: Math.floor(GRID_HEIGHT / 2) }
+            ];
+            direction = 'up';
+            nextDirection = 'up';
+            score = 0;
+            scoreElement.textContent = `Счёт: ${score}`;
+            generateFood();
+            drawGame();
+        }
+
+        // Генерация еды
+        function generateFood() {
+            let foodPosition;
+            do {
+                foodPosition = {
+                    x: Math.floor(Math.random() * GRID_WIDTH),
+                    y: Math.floor(Math.random() * GRID_HEIGHT)
+                };
+                // Проверяем, что еда не появляется на змейке
+            } while (snake.some(segment => segment.x === foodPosition.x && segment.y === foodPosition.y));
+            food = foodPosition;
+        }
+
+        // Отрисовка игры
+        function drawGame() {
+            // Очистка канваса
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Отрисовка змейки
+            snake.forEach((segment, index) => {
+                ctx.fillStyle = index === 0 ? '#00ff00' : '#00cc00'; // Голова ярче
+                ctx.fillRect(segment.x * GRID_SIZE, segment.y * GRID_SIZE, GRID_SIZE - 1, GRID_SIZE - 1);
+            });
+
+            // Отрисовка еды
+            ctx.fillStyle = '#ff0000';
+            ctx.fillRect(food.x * GRID_SIZE, food.y * GRID_SIZE, GRID_SIZE - 1, GRID_SIZE - 1);
+        }
+
+        // Обновление игры
+        function updateGame() {
+            // Обновляем направление
+            direction = nextDirection;
+
+            // Получаем голову змейки
+            const head = { ...snake[0] };
+
+            // Двигаем голову в зависимости от направления
+            switch (direction) {
+                case 'up': head.y--; break;
+                case 'down': head.y++; break;
+                case 'left': head.x--; break;
+                case 'right': head.x++; break;
+            }
+
+            // Проверка на столкновение со стеной
+            if (head.x < 0 || head.x >= GRID_WIDTH || head.y < 0 || head.y >= GRID_HEIGHT) {
+                gameOver();
+                return;
+            }
+
+            // Проверка на столкновение с собой
+            if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+                gameOver();
+                return;
+            }
+
+            // Добавляем новую голову
+            snake.unshift(head);
+
+            // Проверка на поедание еды
+            if (head.x === food.x && head.y === food.y) {
+                score++;
+                scoreElement.textContent = `Счёт: ${score}`;
+                generateFood();
+            } else {
+                // Удаляем хвост, если еда не съедена
+                snake.pop();
+            }
+
+            // Отрисовка
+            drawGame();
+        }
+
+        // Завершение игры
+        function gameOver() {
+            clearInterval(gameLoop);
+            gameRunning = false;
+            startButton.disabled = false;
+            restartButton.disabled = false;
+            countdownElement.style.display = 'none';
+        }
+
+        // Запуск игры с отсчётом
+        function startGame() {
+            if (gameRunning) return;
+
+            initGame();
+            gameRunning = true;
+            startButton.disabled = true;
+            restartButton.disabled = true;
+
+            // Показываем отсчёт
+            countdownElement.style.display = 'block';
+            let count = 3;
+            countdownElement.textContent = count;
+
+            countdownTimer = setInterval(() => {
+                count--;
+                if (count <= 0) {
+                    clearInterval(countdownTimer);
+                    countdownElement.style.display = 'none';
+                    gameLoop = setInterval(updateGame, 150); // Скорость игры
+                } else {
+                    countdownElement.textContent = count;
+                }
+            }, 1000);
+        }
+
+        // Перезапуск игры
+        function restartGame() {
+            clearInterval(gameLoop);
+            clearInterval(countdownTimer);
+            startGame();
+        }
+
+        // Управление клавиатурой
+        document.addEventListener('keydown', (e) => {
+            if (!gameRunning) return;
+
+            switch (e.key) {
+                case 'ArrowUp':
+                    if (direction !== 'down') nextDirection = 'up';
+                    break;
+                case 'ArrowDown':
+                    if (direction !== 'up') nextDirection = 'down';
+                    break;
+                case 'ArrowLeft':
+                    if (direction !== 'right') nextDirection = 'left';
+                    break;
+                case 'ArrowRight':
+                    if (direction !== 'left') nextDirection = 'right';
+                    break;
+            }
+        });
+
+        // Кнопки управления
+        startButton.addEventListener('click', startGame);
+        restartButton.addEventListener('click', restartGame);
+
+        // Инициализация при загрузке
+        initGame();
+    </script>
+</body>
+</html>

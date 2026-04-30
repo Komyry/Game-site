@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игра на реакцию</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .game-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+        }
+        .game-area {
+            margin: 20px 0;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #reaction-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #reaction-button:hover {
+            background-color: #45a049;
+        }
+        #reaction-button:active {
+            background-color: #3d8b40;
+        }
+        #reaction-button.hidden {
+            display: none;
+        }
+        .stats {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        button:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Игра на реакцию</h1>
+        <p>Нажимайте на кнопку как можно быстрее, когда она появляется!</p>
+
+        <div class="game-area">
+            <button id="reaction-button" class="hidden">Нажми меня!</button>
+        </div>
+
+        <div class="stats">
+            <p>Ваше время реакции: <span id="reaction-time">-</span> мс</p>
+            <p>Среднее время: <span id="average-time">-</span> мс</p>
+            <p>Лучшее время: <span id="best-time">-</span> мс</p>
+            <p>Попыток: <span id="attempts">0</span></p>
+        </div>
+
+        <div class="controls">
+            <button id="start-button">Начать игру</button>
+            <button id="reset-button">Сбросить статистику</button>
+        </div>
+    </div>
+
+    <script>
+        // Переменные для игры
+        let startTime;
+        let reactionTimes = [];
+        let gameActive = false;
+        let timeoutId;
+
+        // Элементы DOM
+        const reactionButton = document.getElementById('reaction-button');
+        const startButton = document.getElementById('start-button');
+        const resetButton = document.getElementById('reset-button');
+        const reactionTimeDisplay = document.getElementById('reaction-time');
+        const averageTimeDisplay = document.getElementById('average-time');
+        const bestTimeDisplay = document.getElementById('best-time');
+        const attemptsDisplay = document.getElementById('attempts');
+
+        // Функция для начала игры
+        function startGame() {
+            if (gameActive) return;
+
+            gameActive = true;
+            startButton.disabled = true;
+
+            // Скрываем кнопку на случайное время (1-4 секунды)
+            const delay = Math.floor(Math.random() * 3000) + 1000;
+
+            timeoutId = setTimeout(() => {
+                reactionButton.classList.remove('hidden');
+                startTime = new Date().getTime();
+            }, delay);
+        }
+
+        // Функция для обработки нажатия на кнопку реакции
+        function handleReaction() {
+            if (!gameActive) return;
+
+            const endTime = new Date().getTime();
+            const reactionTime = endTime - startTime;
+
+            // Сохраняем время реакции
+            reactionTimes.push(reactionTime);
+
+            // Обновляем статистику
+            updateStats();
+
+            // Скрываем кнопку
+            reactionButton.classList.add('hidden');
+
+            // Сбрасываем состояние игры
+            gameActive = false;
+            startButton.disabled = false;
+            clearTimeout(timeoutId);
+        }
+
+        // Функция для обновления статистики
+        function updateStats() {
+            const lastTime = reactionTimes[reactionTimes.length - 1];
+            reactionTimeDisplay.textContent = lastTime;
+
+            const averageTime = reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length;
+            averageTimeDisplay.textContent = averageTime.toFixed(2);
+
+            const bestTime = Math.min(...reactionTimes);
+            bestTimeDisplay.textContent = bestTime;
+
+            attemptsDisplay.textContent = reactionTimes.length;
+        }
+
+        // Функция для сброса статистики
+        function resetStats() {
+            reactionTimes = [];
+            reactionTimeDisplay.textContent = '-';
+            averageTimeDisplay.textContent = '-';
+            bestTimeDisplay.textContent = '-';
+            attemptsDisplay.textContent = '0';
+
+            if (gameActive) {
+                reactionButton.classList.add('hidden');
+                gameActive = false;
+                startButton.disabled = false;
+                clearTimeout(timeoutId);
+            }
+        }
+
+        // Обработчики событий
+        startButton.addEventListener('click', startGame);
+        reactionButton.addEventListener('click', handleReaction);
+        resetButton.addEventListener('click', resetStats);
+    </script>
+</body>
+</html>

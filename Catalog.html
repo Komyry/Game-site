@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог игр "KomTeam Magazine"</title>
+  <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+  <script src="Script.js"></script>
+
+  <!-- ГОЛОВА -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <h1>KomTeam Magazine</h1>
+        <p>Ваш портал в мир инди-игр и кибер-приключений</p>
+      </div>
+      <nav class="header-nav">
+        <ul>
+          <li><a href="Index.html">Основное</a></li>
+          <li><a href="Catalog.html" class="active">Каталог игр</a></li>
+          <li><a href="About.html">О нас</a></li>
+          <li><a href="Contacts.html">Контакты</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ТЕЛО — КАТАЛОГ ИГР -->
+  <main class="catalog">
+    <h2>🎮 КАТАЛОГ ИГР</h2>
+    <p class="catalog-intro">Откройте для себя сотни уникальных инди-игр, от классических аркад до космических симуляторов. Все игры протестированы и одобрены нашей командой.</p>
+
+    <!-- ФИЛЬТРЫ -->
+    <div class="filters">
+      <label for="genre-filter">Жанр:</label>
+      <select id="genre-filter">
+        <option value="all">Все жанры</option>
+        <option value="arcade">Аркада</option>
+        <option value="racing">Гонки</option>
+        <option value="puzzle">Головоломки</option>
+        <option value="sandbox">Песочница</option>
+      </select>
+      <button id="reset-filters">Сбросить фильтры</button>
+    </div>    
+
+    <!-- КАРТОЧКИ ИГР -->
+    <div class="games-grid" id="games-grid">
+      
+      <!-- Игра 1 -->
+      <a href="Tetris.html" class="game-card">
+        <img src="https://avatars.mds.yandex.net/i?id=30900e1c6fa68929372cba6207be03d2_sr-5101755-images-thumbs&n=13" alt="Tetris">
+        <h3>Тетрис</h3>
+        <div class="game-meta">
+          <span class="genre">puzzle</span>
+        </div>
+      </a>
+
+      <!-- Игра 2 -->
+      <a href="Zmeika.html" class="game-card">
+        <img src="https://play-lh.googleusercontent.com/S9ZmNx5LYCj7h2IJZb0QqkXAGki6JRaMQ25ycKfrngDkNBA6jk7rM87YcAH1prV_OA" alt="Змейка">
+        <h3>Змейка</h3>
+        <div class="game-meta">
+          <span class="genre">arcade</span>
+        </div>
+      </a>
+
+      <!-- Игра 3 -->
+      <a href="Racing.html" class="game-card">
+        <img src="https://avatars.mds.yandex.net/i?id=eee8b6e170d75a17c75a3c06ede5e44b71b957ea-5234809-images-thumbs&n=13" alt="Vivepoint">
+        <h3>Vivepoint</h3>
+        <div class="game-meta">
+          <span class="genre">race</span>
+        </div>
+      </a>
+
+      <!-- Игра 4 -->
+      <a href="Rec.html" class="game-card">
+        <img src="https://i.ytimg.com/vi/9Dq0VZqTSzA/maxresdefault.jpg" alt="Speed Button">
+        <h3>Speed button</h3>
+        <div class="game-meta">
+          <span class="genre">QTE</span>
+        </div>
+      </a>
+
+      <!-- Игра 5 -->
+      <a href="Cliker.html" class="game-card">
+        <img src="https://i.ytimg.com/vi/6-bwkMAxZ9A/maxresdefault.jpg" alt="Click click clicker">
+        <h3>Click click clicker</h3>
+        <div class="game-meta">
+          <span class="genre">clicker</span>
+        </div>
+      </a>
+  </main>
+
+  <!-- НОГИ -->
+  <footer class="footer">
+    <p>© 2026 KomTeam Magazine. Все права защищены.</p>
+    <p>
+      <a href="mailto:contact@komteam.com">contact@komteam.com</a> | 
+      <a href="https://max.ru/komteam">MAX</a> | 
+      <a href="https://telegram.com/komteam">Telegram</a>
+    </p>
+    <p>Разработано с ❤️ в космической лаборатории</p>
+  </footer>
+
+  <!-- Анимационные элементы фона -->
+  <div class="galaxy"></div>
+</body>
+</html>

@@ -1,0 +1,1291 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow-y: auto;
+    font-family: 'Arial', sans-serif;
+    color: #e0e0ff;
+    background: linear-gradient(135deg, #1a0033, #52004b, #3a006e, #240047, #1a0033);
+    background-size: 400% 400%;
+    animation: cosmicGradient 18s ease infinite;
+  }
+  
+  /* Голова */
+  .header {
+    background-color: #240047;
+    color: #e0e0ff;
+    text-align: center;
+    padding: 40px 20px;
+    box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
+    position: relative;
+    z-index: 10;
+    border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+  }
+  
+  .header h1 {
+    margin: 0 0 10px 0;
+    font-size: 3rem;
+    text-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+    letter-spacing: 2px;
+  }
+  
+  .header p {
+    margin: 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+  
+  /* Тело — каталог игр */
+  .catalog {
+    padding: 40px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 10;
+  }
+  
+  .game-card {
+    background-color: rgba(26, 0, 51, 0.6);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .game-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(138, 43, 226, 0.4);
+  }
+  
+  .game-card img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(138, 43, 226, 0.4);
+  }
+  
+  .game-card h3 {
+    margin: 10px 0 5px;
+    color: #bb9af7;
+    font-size: 1.4rem;
+  }
+  
+  .game-card p {
+    color: #d0d0ff;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  /* Ноги (футер) */
+  .footer {
+    background-color: #1a0033;
+    color: #e0e0ff;
+    text-align: center;
+    padding: 30px 20px;
+    border-top: 1px solid rgba(138, 43, 226, 0.2);
+    position: relative;
+    z-index: 10;
+    margin-top: 40px;
+  }
+  
+  .footer p {
+    margin: 8px 0;
+    font-size: 0.9rem;
+  }
+  
+  .footer a {
+    color: #bb9af7;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer a:hover {
+    color: #e0e0ff;
+    text-shadow: 0 0 8px rgba(138, 43, 226, 0.8);
+  }
+  
+  /* Звёзды — случайные, мерцающие */
+  .star {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--duration) ease-in-out infinite;
+    opacity: var(--opacity);
+    box-shadow: 0 0 var(--glow) rgba(138, 43, 226, 0.8);
+  }
+  
+  @keyframes twinkle {
+    0%, 100% { opacity: var(--opacity); transform: scale(1); }
+    50% { opacity: 0; transform: scale(0.8); }
+  }
+  
+  /* Галактика */
+  .galaxy {
+    position: absolute;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 200px;
+    background: radial-gradient(ellipse, rgba(138, 43, 226, 0.2), transparent 70%);
+    border-radius: 50%;
+    filter: blur(25px);
+    z-index: -1;
+    animation: drift 30s linear infinite;
+  }
+  
+  @keyframes drift {
+    0% { transform: translateX(-50%) translateY(0); }
+    100% { transform: translateX(-50%) translateY(20px); }
+  }
+
+  /* БЛОК НОВОСТЕЙ */
+.news {
+    padding: 60px 20px;
+    background-color: rgba(26, 0, 51, 0.4);
+    margin: 0 auto;
+    max-width: 1200px;
+    border-radius: 20px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(138, 43, 226, 0.2);
+    box-shadow: 0 8px 30px rgba(138, 43, 226, 0.1);
+    position: relative;
+    z-index: 10;
+  }
+  
+  .news h2 {
+    text-align: center;
+    color: #bb9af7;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+  }
+  
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+  }
+  
+  .news-card {
+    background-color: rgba(26, 0, 51, 0.7);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(8px);
+  }
+  
+  .news-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(138, 43, 226, 0.3);
+  }
+  
+  .news-card h3 {
+    color: #bb9af7;
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+  }
+  
+  .news-card p {
+    color: #d0d0ff;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  
+  .news-card time {
+    display: block;
+    font-size: 0.85rem;
+    color: #9ca8c2;
+    font-style: italic;
+  }
+
+  .top-games {
+    padding: 40px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.top-games h2 {
+    color: #bb9af7;
+    margin-bottom: 50px;
+    font-size: 2.2rem;
+    text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+}
+
+/* Пьедестал */
+.podium {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.podium-place {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.podium-place:hover {
+    transform: scale(1.05);
+}
+
+/* Стили для мест на пьедестале */
+.first {
+    height: 350px;
+    order: 2;
+}
+
+.second {
+    height: 280px;
+    order: 1;
+}
+
+.third {
+    height: 230px;
+    order: 3;
+}
+
+/* Карточка игры на пьедестале */
+.podium-place .game-card {
+    background-color: rgba(26, 0, 51, 0.6);
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    width: 220px;
+    position: relative;
+    text-decoration: none;
+    color: #e0e0ff;
+    display: block;
+}
+
+.podium-place .game-card:hover {
+    box-shadow: 0 15px 40px rgba(138, 43, 226, 0.5);
+    transform: translateY(-10px);
+}
+
+.podium-place .game-card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 2px solid rgba(138, 43, 226, 0.5);
+    object-fit: cover;
+}
+
+.podium-place .game-card h3 {
+    margin: 10px 0 5px;
+    color: #bb9af7;
+    font-size: 1.3rem;
+}
+
+.podium-place .game-card p {
+    color: #d0d0ff;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* Медаль места */
+.place-badge {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ffd700, #ffb900);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #1a0033;
+    border: 3px solid #1a0033;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+}
+
+.first .place-badge {
+    background: linear-gradient(135deg, #ffd700, #ffec8b);
+}
+
+.second .place-badge {
+    background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
+    color: #1a0033;
+}
+
+.third .place-badge {
+    background: linear-gradient(135deg, #cd7f32, #b8860b);
+}
+
+/* Обновлённый стиль для шапки */
+.header {
+  background-color: #240047;
+  color: #e0e0ff;
+  padding: 20px 40px;
+  box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
+  position: relative;
+  z-index: 10;
+  border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  flex: 1;
+}
+
+.header h1 {
+  margin: 0 0 10px 0;
+  font-size: 2.5rem;
+  text-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+  letter-spacing: 2px;
+}
+
+.header p {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Стиль для навигационного меню */
+.header-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 30px;
+}
+
+.header-nav li {
+  position: relative;
+}
+
+.header-nav a {
+  color: #e0e0ff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  padding: 5px 0;
+  position: relative;
+}
+
+.header-nav a:hover {
+  color: #bb9af7;
+  text-shadow: 0 0 8px rgba(138, 43, 226, 0.5);
+}
+
+.header-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #bb9af7;
+  transition: width 0.3s ease;
+}
+
+.header-nav a:hover::after {
+  width: 100%;
+}
+
+/* === О НАС === */
+.about {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+.about-title {
+  text-align: center;
+  color: #bb9af7;
+  font-size: 2.4rem;
+  margin-bottom: 40px;
+  text-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+}
+
+/* Glass-эффект */
+.glass {
+  background: rgba(26, 0, 51, 0.55);
+  border: 1px solid rgba(138, 43, 226, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(138, 43, 226, 0.15);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.glass:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(138, 43, 226, 0.25);
+}
+
+/* Вводный абзац */
+.about-intro {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 60px;
+  padding: 30px;
+}
+
+/* Ценности */
+.about-values h3,
+.about-team h3,
+.about-stats h3 {
+  text-align: center;
+  color: #bb9af7;
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  text-shadow: 0 0 10px rgba(138, 43, 226, 0.4);
+}
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-bottom: 60px;
+}
+.value-card {
+  padding: 25px;
+  text-align: center;
+}
+.value-card h4 {
+  color: #ffd700;
+  margin: 0 0 10px;
+  font-size: 1.3rem;
+}
+.value-card p {
+  color: #e0e0ff;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Команда */
+.team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 35px;
+  margin-bottom: 60px;
+}
+.team-member {
+  width: 260px;
+  text-align: center;
+  padding: 25px;
+}
+.team-member img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid rgba(138, 43, 226, 0.5);
+  margin-bottom: 15px;
+  object-fit: cover;
+  transition: transform .3s ease;
+}
+.team-member:hover img {
+  transform: scale(1.05);
+}
+.team-member figcaption {
+  color: #e0e0ff;
+}
+.team-member strong {
+  display: block;
+  color: #bb9af7;
+  margin-bottom: 8px;
+  font-size: 1.15rem;
+}
+.team-member span {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Статистика */
+.about-stats {
+  padding: 40px;
+  text-align: center;
+}
+.stats-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+.stats-list li {
+  flex: 1 1 200px;
+  font-size: 1.1rem;
+  color: #e0e0ff;
+}
+.stats-list span {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+/* Подсветка активного пункта меню */
+.header-nav a.active {
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+}
+.header-nav a.active::after {
+  width: 100%;
+  background-color: #ffd700;
+}
+
+/* === КОНТАКТЫ === */
+.contacts {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+
+.contacts-title {
+  text-align: center;
+  color: #bb9af7;
+  font-size: 2.4rem;
+  margin-bottom: 40px;
+  text-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+}
+
+/* === БЛОК С КАНАЛАМИ (грид) === */
+.channels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 40px;
+  margin-bottom: 50px; /* Отступ снизу — ключевой! */
+  padding: 0 10px;
+}
+
+.channel-card {
+  background: rgba(26, 0, 51, 0.55);
+  border: 1px solid rgba(138, 43, 226, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(138, 43, 226, 0.15);
+  transition: box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  color: #e0e0ff;
+  text-decoration: none;
+  text-align: center;
+  height: 100%;
+  justify-content: center;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.channel-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(138, 43, 226, 0.25);
+}
+
+.channel-card .icon {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 16px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* === БЛОК КАНАЛОВ === */
+.channels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 40px;
+  margin-bottom: 50px;
+  padding: 0 10px;
+}
+
+.channel-card {
+  background: rgba(26, 0, 51, 0.55);
+  border: 1px solid rgba(138, 43, 226, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(138, 43, 226, 0.15);
+  transition: box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  color: #e0e0ff;
+  text-decoration: none;
+  text-align: center;
+  height: 100%;
+  justify-content: center;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.channel-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(138, 43, 226, 0.25);
+}
+
+/* === ИКОНКИ КАНАЛОВ — УНИКАЛЬНЫЕ SVG ЛОГОТИПЫ === */
+
+.channel-card.telegram .icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300bfff'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.6-1.13 7.44-.14.8-.42 1.05-.7 1.08-.6.06-1.05-.38-1.62-.76-1.6-1.04-2.4-1.52-3.9-2.48-1.04-.66.18-1.02 1.44-3.22.4-.7.2-1.3-.02-1.7-.5-.9-1.96-2.04-2.7-2.6-.32-.26-.8-.68-.6-.96.2-.28 1.04-.06 1.48.04.6.14 1.36.58 3.6 2.38 1.92 1.4 2.6 2.24 2.86 2.96.06.16.1.4-.14.58z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.channel-card.email .icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffd700'%3E%3Cpath d='M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.channel-card.max .icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff4d4d'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* === ДОПОЛНИТЕЛЬНО: ДОБАВИМ ИКОНКИ ДЛЯ ДРУГИХ КАНАЛОВ (если понадобятся) === */
+.channel-card.instagram .icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e1306c'%3E%3Cpath d='M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* === БЛОК ФОРМЫ ОБРАТНОЙ СВЯЗИ === */
+.contacts-form {
+  max-width: 600px;
+  margin: 0 auto; /* Центрируем */
+  padding: 30px;
+  background: rgba(26, 0, 51, 0.55);
+  border: 1px solid rgba(138, 43, 226, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(138, 43, 226, 0.15);
+  transition: box-shadow 0.3s ease;
+  margin-top: 50px; /* ✅ КЛЮЧЕВОЙ ОТСТУП СВЕРХУ */
+  margin-bottom: 50px; /* ✅ КЛЮЧЕВОЙ ОТСТУП СНИЗУ */
+}
+
+.contacts-form label {
+  display: block;
+  margin-bottom: 15px;
+  color: #e0e0ff;
+  font-size: 0.95rem;
+}
+
+.contacts-form input,
+.contacts-form select,
+.contacts-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border: 1px solid rgba(138, 43, 226, 0.4);
+  border-radius: 8px;
+  background: rgba(26, 0, 51, 0.4);
+  color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.contacts-form input:focus,
+.contacts-form select:focus,
+.contacts-form textarea:focus {
+  outline: none;
+  border-color: #bb9af7;
+  box-shadow: 0 0 8px rgba(138, 43, 226, 0.6);
+}
+
+.submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: linear-gradient(90deg, #8a2be2 0%, #bb9af7 100%);
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
+}
+
+.form-status {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #ffd700;
+}
+
+/* === БЛОК РЕКВИЗИТОВ === */
+.contacts-details {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background: rgba(26, 0, 51, 0.55);
+  border: 1px solid rgba(138, 43, 226, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(138, 43, 226, 0.15);
+  transition: box-shadow 0.3s ease;
+  margin-top: 50px; /* ✅ КЛЮЧЕВОЙ ОТСТУП СВЕРХУ */
+  margin-bottom: 40px; /* ✅ Отступ снизу */
+}
+
+.contacts-details:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(138, 43, 226, 0.25);
+}
+
+.contacts-details address {
+  color: #e0e0ff;
+  font-style: normal;
+  line-height: 1.7;
+}
+
+.contacts-details a {
+  color: #bb9af7;
+  text-decoration: none;
+}
+
+.contacts-details a:hover {
+  text-decoration: underline;
+}
+
+/* === ОБЩИЙ ПЕРЕХОД ДЛЯ ВСЕХ ИНТЕРАКТИВНЫХ ЭЛЕМЕНТОВ === */
+.channel-card,
+.contacts-form,
+.contacts-details {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* 
+     cubic-bezier(0.25, 0.46, 0.45, 0.94) — это "ease-in-out" с лёгким "bounce"
+     более плавный и современный, чем просто "ease" или "linear"
+  */
+}
+
+/* === ЭФФЕКТ НАВЕДЕНИЯ — ЕДИНЫЙ ДЛЯ ВСЕХ === */
+.channel-card:hover,
+.contacts-form:hover,
+.contacts-details:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(138, 43, 226, 0.25);
+}
+
+/* === ОСТАЛЬНЫЕ СТИЛИ (без дублирования transition) === */
+.channel-card {
+  background: rgba(26, 0, 51, 0.55);
+  border: 1px solid rgba(138, 43, 226, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(138, 43, 226, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  color: #e0e0ff;
+  text-decoration: none;
+  text-align: center;
+  height: 100%;
+  justify-content: center;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.contacts-form,
+.contacts-details {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background: rgba(26, 0, 51, 0.55);
+  border: 1px solid rgba(138, 43, 226, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(138, 43, 226, 0.15);
+  color: #e0e0ff;
+}
+
+.contacts-form {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.contacts-details {
+  margin-top: 50px;
+  margin-bottom: 40px;
+}
+
+/* === КАТАЛОГ ИГР === */
+.catalog {
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60px;
+  position: relative;
+  z-index: 10;
+}
+
+.catalog h2 {
+  color: #bb9af7;
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+  text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+}
+
+.catalog-intro {
+  text-align: center;
+  max-width: 800px;
+  margin-bottom: 50px;
+  font-size: 1.1rem;
+  color: #d0d0ff;
+  line-height: 1.7;
+}
+
+/* ФИЛЬТРЫ */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 50px;
+  padding: 20px;
+  background: rgba(26, 0, 51, 0.5);
+  border-radius: 15px;
+  border: 1px solid rgba(138, 43, 226, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.filters label {
+  color: #e0e0ff;
+  font-size: 0.95rem;
+  margin-bottom: 5px;
+  white-space: nowrap;
+}
+
+.filters select,
+.filters button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(138, 43, 226, 0.4);
+  background: rgba(26, 0, 51, 0.4);
+  color: #e0e0ff;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filters select:focus,
+.filters button:focus {
+  outline: none;
+  border-color: #bb9af7;
+  box-shadow: 0 0 8px rgba(138, 43, 226, 0.6);
+}
+
+.filters button {
+  background: linear-gradient(90deg, #8a2be2, #bb9af7);
+  color: white;
+  border: none;
+  font-weight: 600;
+  padding: 8px 20px;
+  transition: transform 0.2s ease;
+}
+
+.filters button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+}
+
+/* СЕТКА ИГР */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+  width: 100%;
+  max-width: 1400px;
+}
+
+/* Карточка игры (обновлённая) */
+.game-card {
+  background-color: rgba(26, 0, 51, 0.6);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  color: #e0e0ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.game-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(138, 43, 226, 0.4);
+}
+
+.game-card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border: 1px solid rgba(138, 43, 226, 0.4);
+  object-fit: cover;
+}
+
+.game-card h3 {
+  margin: 10px 0 5px;
+  color: #bb9af7;
+  font-size: 1.4rem;
+  line-height: 1.3;
+}
+
+.game-card p {
+  color: #d0d0ff;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.game-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.game-meta span {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background: rgba(138, 43, 226, 0.2);
+  color: #bb9af7;
+  border: 1px solid rgba(138, 43, 226, 0.3);
+}
+
+.game-meta .genre {
+  background: rgba(255, 215, 0, 0.15);
+  color: #ffd700;
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+.game-meta .platform {
+  background: rgba(72, 187, 120, 0.15);
+  color: #48bb78;
+  border-color: rgba(72, 187, 120, 0.3);
+}
+
+/* ПАГИНАЦИЯ */
+.pagination {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.page-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(26, 0, 51, 0.6);
+  color: #d0d0ff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(138, 43, 226, 0.3);
+}
+
+.page-btn:hover {
+  background: rgba(138, 43, 226, 0.3);
+  transform: translateY(-2px);
+}
+
+.page-btn.active {
+  background: linear-gradient(90deg, #8a2be2, #bb9af7);
+  color: white;
+  box-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* НОВОСТИ */
+.news {
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 1400px;
+  margin-top: 60px;
+}
+
+.news h2 {
+  color: #bb9af7;
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.news-card {
+  background: rgba(26, 0, 51, 0.6);
+  border-radius: 15px;
+  padding: 25px;
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: #e0e0ff;
+  text-align: center;
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(138, 43, 226, 0.3);
+}
+
+.news-card h3 {
+  color: #bb9af7;
+  margin-bottom: 12px;
+  font-size: 1.4rem;
+}
+
+.news-card p {
+  color: #d0d0ff;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.news-card time {
+  font-size: 0.9rem;
+  color: #a0a0ff;
+  font-style: italic;
+}
+
+/* ФОН — ГАЛАКТИКА (анимация) */
+.galaxy {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(135deg, #0a0015, #1a0033);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.galaxy::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2000px;
+  height: 2000px;
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  animation: pulse 8s infinite alternate;
+}
+
+.galaxy::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="%23bb9af7" opacity="0.6"/></svg>') repeat;
+  opacity: 0.3;
+  animation: starTwinkle 3s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.4; }
+  100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.8; }
+}
+
+/* АДАПТИВНОСТЬ */
+@media (max-width: 768px) {
+  .catalog h2 { font-size: 2rem; }
+  .catalog-intro { font-size: 1rem; }
+  .filters { flex-direction: column; align-items: stretch; gap: 15px; }
+  .games-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .game-card img { width: 100px; height: 100px; }
+  .game-card h3 { font-size: 1.2rem; }
+  .pagination { justify-content: center; }
+  .page-btn { width: 35px; height: 35px; font-size: 0.9rem; }
+  .news-grid { grid-template-columns: 1fr; }
+  .news-card { padding: 20px; }
+}
+
+@media (max-width: 480px) {
+  .header-content { flex-direction: column; text-align: center; }
+  .header-nav ul { flex-wrap: wrap; justify-content: center; }
+  .header-nav ul li { margin: 5px; }
+  .catalog { padding: 40px 15px; }
+  .games-grid { gap: 20px; }
+  .game-card { padding: 15px; }
+  .game-card h3 { font-size: 1.1rem; }
+  .game-meta { gap: 5px; }
+  .game-meta span { font-size: 0.7rem; padding: 3px 6px; }
+  .news h2 { font-size: 1.7rem; }
+  .news-card h3 { font-size: 1.2rem; }
+}
+
+.contacts-channels h3 {
+  text-align: center;
+  margin: 10 0 20px 0; /* Убираем стандартные отступы и добавляем отступ снизу */
+  color: #e0e0ff;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Блок с отзывами пользователей */
+.contacts-reviews {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 30px;
+  background: rgba(26, 0, 51, 0.55);
+  border: 1px solid rgba(138, 43, 226, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(138, 43, 226, 0.15);
+  color: #e0e0ff;
+}
+
+.contacts-reviews h3 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+  color: #bb9af7;
+  text-shadow: 0 0 10px rgba(138, 43, 226, 0.4);
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.review-card {
+  background: rgba(26, 0, 51, 0.7);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(138, 43, 226, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(138, 43, 226, 0.2);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.review-author {
+  font-weight: 600;
+  color: #bb9af7;
+}
+
+.review-date {
+  color: #a0a0ff;
+  font-style: italic;
+}
+
+.review-rating {
+  color: #ffd700;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.review-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #e0e0ff;
+}
+
+/* Адаптивность для блока отзывов */
+@media (max-width: 768px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filters label {
+  display: flex;
+  align-items: center; /* Вертикальное выравнивание */
+  justify-content: center; /* Горизонтальное выравнивание */
+}

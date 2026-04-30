@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Тетрис на чистом JS</title>
+<style>
+body{margin:0;background:#111;display:flex;justify-content:center;align-items:center;height:100vh;font-family:Arial,Helvetica,sans-serif}
+#wrap{display:flex;gap:15px;align-items:flex-start}
+canvas{background:#222;border:2px solid #555}
+#panel{color:#fff;display:flex;flex-direction:column;gap:10px}
+#score{font-size:20px}
+button{padding:8px 14px;font-size:16px;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="board"></canvas>
+  <div id="panel">
+    <div id="score">0</div>
+    <button id="startBtn">Старт / Рестарт</button>
+    <div style="font-size:13px;color:#aaa">
+      ← →  – влево / вправо<br>
+      ↓    – ускорить<br>
+      ↑    – поворот<br>
+      ПРОБЕЛ – сброс
+    </div>
+  </div>
+</div>
+
+<script>
+/* ========== конфигурация ========== */
+const COLS = 10;
+const ROWS = 20;
+const BLOCK = 30;          // px
+const canvas = document.getElementById('board');
+const ctx    = canvas.getContext('2d');
+canvas.width  = COLS * BLOCK;
+canvas.height = ROWS * BLOCK;
+
+/* ========== фигуры ========== */
+const SHAPES = [
+  [[1,1,1,1]],               // I
+  [[1,1],[1,1]],              // O
+  [[0,1,0],[1,1,1]],          // T
+  [[1,1,0],[0,1,1]],          // S
+  [[0,1,1],[1,1,0]],          // Z
+  [[1,0,0],[1,1,1]],          // J
+  [[0,0,1],[1,1,1]]           // L
+];
+const COLORS = ['#00f0f0','#f0f000','#a000f0','#00f000','#f00000','#0000f0','#f0a000'];
+
+/* ========== игровые переменные ========== */
+let board   = createMatrix(COLS, ROWS);
+let piece   = null;
+let score   = 0;
+let dropCounter = 0;
+let dropInterval = 500;  // мс
+let lastTime = 0;
+let gameOver = false;
+
+/* ========== мат. утилиты ========== */
+function createMatrix(w,h){ return Array.from({length:h},()=>Array(w).fill(0)) }
+
+function createPiece(){
+  const typeId = Math.floor(Math.random()*SHAPES.length);
+  return {
+    shape: SHAPES[typeId],
+    color: COLORS[typeId],
+    x: Math.floor(COLS/2)-1,
+    y: 0
+  };
+}
+
+function collide(board, piece){
+  for(let y=0;y<piece.shape.length;y++){
+    for(let x=0;x<piece.shape[y].length;x++){
+      if(piece.shape[y][x] &&
+         (board[y+piece.y] && board[y+piece.y][x+piece.x])!==0){
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function merge(board, piece){
+  piece.shape.forEach((row,y)=>{
+    row.forEach((val,x)=>{
+      if(val) board[y+piece.y][x+piece.x] = piece.color;
+    });
+  });
+}
+
+function rotate(piece){
+  const p = JSON.parse(JSON.stringify(piece));
+  const T  = p.shape[0].map((_,i)=>p.shape.map(row=>row[i]).reverse());
+  p.shape = T;
+  return p;
+}
+
+function valid(p){
+  for(let y=0;y<p.shape.length;y++){
+    for(let x=0;x<p.shape[y].length;x++){
+      if(!p.shape[y][x]) continue;
+      let nx = p.x + x;
+      let ny = p.y + y;
+      if(nx<0 || nx>=COLS || ny>=ROWS) return false;
+      if(ny>=0 && board[ny][nx]) return false;
+    }
+  }
+  return true;
+}
+
+function sweep(){
+  let lines = 0;
+  outer: for(let y=ROWS-1;y>=0;y--){
+    for(let x=0;x<COLS;x++){
+      if(board[y][x]===0) continue outer;
+    }
+    board.splice(y,1);
+    board.unshift(Array(COLS).fill(0));
+    lines++;
+    y++;
+  }
+  if(lines>0){
+    score += (lines===1?100:lines===2?300:lines===3?500:800)*(1+Math.floor(score/1000));
+    document.getElementById('score').textContent = score;
+    dropInterval = Math.max(50, 500 - Math.floor(score/1000)*20);
+  }
+}
+
+/* ========== игровой цикл ========== */
+function playerDrop(){
+  piece.y++;
+  if(collide(board, piece)){
+    piece.y--;
+    merge(board, piece);
+    sweep();
+    piece = createPiece();
+    if(collide(board, piece)){
+      gameOver = true;
+      alert('Игра окончена! Счёт: '+score);
+    }
+  }
+  dropCounter = 0;
+}
+
+function playerMove(dir){
+  piece.x+=dir;
+  if(collide(board, piece)) piece.x-=dir;
+}
+
+function playerRotate(){
+  const p = rotate(piece);
+  if(valid(p)) piece = p;
+}
+
+function hardDrop(){
+  while(!collide(board, piece)){ piece.y++; }
+  piece.y--;
+  playerDrop();
+}
+
+function update(time=0){
+  if(gameOver) return;
+  const dt = time - lastTime;
+  lastTime = time;
+  dropCounter += dt;
+  if(dropCounter > dropInterval) playerDrop();
+  draw();
+  requestAnimationFrame(update);
+}
+
+function draw(){
+  ctx.fillStyle = '#111';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  drawMatrix(board, 0, 0);
+  if(piece){
+    drawMatrix(piece.shape, piece.x, piece.y, piece.color);
+  }
+}
+
+function drawMatrix(matrix, ox, oy, color=null){
+  matrix.forEach((row,y)=>{
+    row.forEach((val,x)=>{
+      if(val){
+        ctx.fillStyle = color || val;
+        ctx.fillRect((ox+x)*BLOCK, (oy+y)*BLOCK, BLOCK-1, BLOCK-1);
+      }
+    });
+  });
+}
+
+/* ========== управление ========== */
+document.addEventListener('keydown', e=>{
+  if(gameOver) return;
+  if(e.key==='ArrowLeft')  playerMove(-1);
+  if(e.key==='ArrowRight') playerMove(1);
+  if(e.key==='ArrowDown')  playerDrop();
+  if(e.key==='ArrowUp')    playerRotate();
+  if(e.key===' ')          hardDrop();
+});
+
+document.getElementById('startBtn').addEventListener('click',()=>{
+  board   = createMatrix(COLS, ROWS);
+  score   = 0;
+  dropInterval = 500;
+  gameOver = false;
+  document.getElementById('score').textContent = 0;
+  piece = createPiece();
+  lastTime = performance.now();
+  update();
+});
+
+/* ========== старт ========== */
+piece = createPiece();
+update();
+</script>
+</body>
+</html>
