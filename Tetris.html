@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>Тетрис на чистом JS</title>
+<title>Тетрис с обратным отсчётом</title>
 <style>
 body{margin:0;background:#111;display:flex;justify-content:center;align-items:center;height:100vh;font-family:Arial,Helvetica,sans-serif}
 #wrap{display:flex;gap:15px;align-items:flex-start}
@@ -10,6 +10,7 @@ canvas{background:#222;border:2px solid #555}
 #panel{color:#fff;display:flex;flex-direction:column;gap:10px}
 #score{font-size:20px}
 button{padding:8px 14px;font-size:16px;cursor:pointer}
+#countdown{font-size:48px;color:#f00;text-align:center;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
 </style>
 </head>
 <body>
@@ -26,6 +27,7 @@ button{padding:8px 14px;font-size:16px;cursor:pointer}
     </div>
   </div>
 </div>
+<div id="countdown"></div>
 
 <script>
 /* ========== конфигурация ========== */
@@ -36,6 +38,7 @@ const canvas = document.getElementById('board');
 const ctx    = canvas.getContext('2d');
 canvas.width  = COLS * BLOCK;
 canvas.height = ROWS * BLOCK;
+const countdownEl = document.getElementById('countdown');
 
 /* ========== фигуры ========== */
 const SHAPES = [
@@ -57,6 +60,7 @@ let dropCounter = 0;
 let dropInterval = 500;  // мс
 let lastTime = 0;
 let gameOver = false;
+let isCountingDown = false;
 
 /* ========== мат. утилиты ========== */
 function createMatrix(w,h){ return Array.from({length:h},()=>Array(w).fill(0)) }
@@ -129,6 +133,39 @@ function sweep(){
   }
 }
 
+/* ========== обратный отсчёт ========== */
+function startCountdown(){
+  if(isCountingDown) return;
+  isCountingDown = true;
+
+  let count = 3;
+  countdownEl.textContent = count;
+  countdownEl.style.display = 'block';
+
+  const interval = setInterval(() => {
+    count--;
+    if(count > 0){
+      countdownEl.textContent = count;
+      // Звуковой сигнал
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioCtx.createOscillator();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+      oscillator.connect(audioCtx.destination);
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + 0.1);
+    } else {
+      countdownEl.style.display = 'none';
+      clearInterval(interval);
+      isCountingDown = false;
+      // Начать игру
+      piece = createPiece();
+      lastTime = performance.now();
+      update();
+    }
+  }, 1000);
+}
+
 /* ========== игровой цикл ========== */
 function playerDrop(){
   piece.y++;
@@ -162,7 +199,7 @@ function hardDrop(){
 }
 
 function update(time=0){
-  if(gameOver) return;
+  if(gameOver || isCountingDown) return;
   const dt = time - lastTime;
   lastTime = time;
   dropCounter += dt;
@@ -193,7 +230,7 @@ function drawMatrix(matrix, ox, oy, color=null){
 
 /* ========== управление ========== */
 document.addEventListener('keydown', e=>{
-  if(gameOver) return;
+  if(gameOver || isCountingDown) return;
   if(e.key==='ArrowLeft')  playerMove(-1);
   if(e.key==='ArrowRight') playerMove(1);
   if(e.key==='ArrowDown')  playerDrop();
@@ -202,19 +239,15 @@ document.addEventListener('keydown', e=>{
 });
 
 document.getElementById('startBtn').addEventListener('click',()=>{
+  if(isCountingDown) return;
   board   = createMatrix(COLS, ROWS);
   score   = 0;
   dropInterval = 500;
   gameOver = false;
   document.getElementById('score').textContent = 0;
-  piece = createPiece();
-  lastTime = performance.now();
-  update();
+  startCountdown();
 });
 
-/* ========== старт ========== */
-piece = createPiece();
-update();
 </script>
 </body>
 </html>

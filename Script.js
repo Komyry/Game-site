@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
   filterGames();
 });
 
+// Script.js
 document.addEventListener('DOMContentLoaded', function() {
   const genreFilter = document.getElementById('genre-filter');
   const resetButton = document.getElementById('reset-filters');
@@ -75,12 +76,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Функция для фильтрации игр по жанру
   function filterGames() {
-    const selectedGenre = genreFilter.value.toLowerCase();
+    const selectedGenre = genreFilter.value;
 
     gameCards.forEach(card => {
-      const genre = card.querySelector('.game-meta .genre').textContent.toLowerCase();
+      const gameGenre = card.querySelector('.genre').textContent.toLowerCase();
 
-      if (selectedGenre === 'all' || genre === selectedGenre) {
+      if (selectedGenre === 'all' || gameGenre === selectedGenre) {
         card.style.display = 'block';
       } else {
         card.style.display = 'none';
@@ -88,15 +89,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Обработчик события для выбора жанра
+  // Обработчик для фильтра жанров
   genreFilter.addEventListener('change', filterGames);
 
-  // Обработчик события для сброса фильтров
+  // Обработчик для кнопки сброса
   resetButton.addEventListener('click', function() {
     genreFilter.value = 'all';
     filterGames();
   });
 
-  // Инициализация - показываем все игры при загрузке
+  // Инициализация - показать все игры при загрузке
   filterGames();
 });
